@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const creditsFiles = await Astro.glob('../content/credits/*.md');
+const credits = creditsFiles.length > 0 ? creditsFiles[0] : null;
+---
+<BaseLayout title="Credits — Cronache della Campagna" activeNav="credits">
+  <div class="parchment">
+    <h1 class="display-title">Credits</h1>
+    <p class="subtitle">⚔ &nbsp; Chi ha reso possibile questa storia &nbsp; ⚔</p>
+    <div class="ornament-divider">— ✦ —</div>
+    {credits ? (
+      <div class="session-content" set:html={credits.compiledContent()} />
+    ) : (
+      <p style="text-align:center; color:var(--ink-faded); font-style:italic;">Modifica credits.md per aggiungere i tuoi credits.</p>
+    )}
+  </div>
+</BaseLayout>

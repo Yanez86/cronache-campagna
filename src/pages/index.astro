@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const sessionFiles = await Astro.glob('../content/sessions/*.md');
+const sessions = sessionFiles
+  .map(s => ({ ...s.frontmatter, url: s.url }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+<BaseLayout title="Cronache della Campagna" activeNav="home">
+  <div class="parchment">
+    <h1 class="display-title">Cronache della Campagna</h1>
+    <p class="subtitle">⚔ &nbsp; Il libro delle sessioni &nbsp; ⚔</p>
+    <div class="ornament-divider">— ✦ —</div>
+    {sessions.length === 0 ? (
+      <p style="text-align:center; color:var(--ink-faded); font-style:italic;">Le storie devono ancora essere scritte.</p>
+    ) : sessions.map((session, i) => (
+      <div class="session-card">
+        <a href={session.url}>
+          <span class="session-number">Sessione {session.number ?? sessions.length - i}</span>
+          <span class="session-title">{session.title}</span>
+          <span class="session-date">{new Date(session.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          {session.excerpt && <p class="session-excerpt">{session.excerpt}</p>}
+        </a>
+      </div>
+    ))}
+  </div>
+</BaseLayout>

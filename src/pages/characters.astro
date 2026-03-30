@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const characters = await Astro.glob('../content/characters/*.md');
+const chars = characters.map(c => c.frontmatter);
+---
+<BaseLayout title="Personaggi — Cronache della Campagna" activeNav="characters">
+  <div class="parchment">
+    <h1 class="display-title">I Personaggi</h1>
+    <p class="subtitle">⚔ &nbsp; Coloro che percorrono il cammino &nbsp; ⚔</p>
+    <div class="ornament-divider">— ✦ —</div>
+    {chars.length === 0 ? (
+      <p style="text-align:center; color:var(--ink-faded); font-style:italic;">Nessun personaggio registrato ancora.</p>
+    ) : (
+      <div class="character-grid">
+        {chars.map(char => (
+          <div class="character-card">
+            <div class="character-avatar">{char.emoji ?? '⚔'}</div>
+            <span class="character-name">{char.name}</span>
+            <span class="character-class">{char.class} · {char.race}</span>
+            {char.player && <span style="font-size:0.75rem; color:var(--ink-faded); display:block; margin-bottom:0.4rem;">Giocato da {char.player}</span>}
+            {char.description && <p class="character-desc">{char.description}</p>}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

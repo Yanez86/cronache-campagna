@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const rulesFiles = await Astro.glob('../content/house-rules/*.md');
+const rules = rulesFiles.map(r => ({ ...r.frontmatter, content: r.compiledContent() }));
+rules.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+---
+<BaseLayout title="Regole della Casa — Cronache della Campagna" activeNav="house-rules">
+  <div class="parchment">
+    <h1 class="display-title">Regole della Casa</h1>
+    <p class="subtitle">⚔ &nbsp; Le leggi che governano il tavolo &nbsp; ⚔</p>
+    <div class="ornament-divider">— ✦ —</div>
+    {rules.length === 0 ? (
+      <p style="text-align:center; color:var(--ink-faded); font-style:italic;">Nessuna regola della casa ancora definita.</p>
+    ) : rules.map(rule => (
+      <div class="rule-block">
+        <h3>{rule.title}</h3>
+        <div set:html={rule.content} />
+      </div>
+    ))}
+  </div>
+</BaseLayout>

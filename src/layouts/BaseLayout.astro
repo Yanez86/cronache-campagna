@@ -1,0 +1,34 @@
+---
+import '../styles/global.css';
+interface Props { title: string; description?: string; activeNav?: string; }
+const { title, description = 'Cronache di una campagna TTRPG', activeNav } = Astro.props;
+const navLinks = [
+  { href: '/',            label: 'Sessioni',   key: 'home' },
+  { href: '/characters',  label: 'Personaggi', key: 'characters' },
+  { href: '/house-rules', label: 'Regole',     key: 'house-rules' },
+  { href: '/world',       label: 'Il Mondo',   key: 'world' },
+  { href: '/credits',     label: 'Credits',    key: 'credits' },
+];
+---
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">⚔ Cronache</a>
+      {navLinks.map(link => (
+        <a href={link.href} class={`nav-link${activeNav === link.key ? ' active' : ''}`}>{link.label}</a>
+      ))}
+    </div>
+  </nav>
+  <main class="page-wrapper"><slot /></main>
+  <footer><span>✦ &nbsp; Ad Astra per Aspera &nbsp; ✦</span></footer>
+</body>
+</html>

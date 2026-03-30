@@ -1,0 +1,26 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { frontmatter } = Astro.props;
+const formattedDate = frontmatter.date
+  ? new Date(frontmatter.date).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+  : '';
+---
+<BaseLayout title={`Sessione ${frontmatter.number} — ${frontmatter.title}`} activeNav="home">
+  <div class="parchment">
+    <a href="/" class="back-link">← Torna alle Sessioni</a>
+    <h1 class="display-title">{frontmatter.title}</h1>
+    <p class="subtitle">
+      {frontmatter.number && `Sessione ${frontmatter.number}`}
+      {frontmatter.number && frontmatter.date && ' · '}
+      {formattedDate}
+    </p>
+    <div class="ornament-divider">— ✦ —</div>
+    <div class="session-content"><slot /></div>
+    {frontmatter.players && (
+      <div class="ornament-divider">— ✦ —</div>
+      <p style="font-size:0.85rem; color:var(--ink-faded); text-align:center; font-style:italic;">
+        Presenti: {frontmatter.players.join(', ')}
+      </p>
+    )}
+  </div>
+</BaseLayout>

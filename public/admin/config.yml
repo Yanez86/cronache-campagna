@@ -1,0 +1,72 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+
+  - name: sessions
+    label: Sessioni di Gioco
+    folder: src/content/sessions
+    create: true
+    slug: "session-{{number}}"
+    fields:
+      - { label: "Layout", name: layout, widget: hidden, default: "../../layouts/SessionLayout.astro" }
+      - { label: "Numero Sessione", name: number, widget: number, value_type: int }
+      - { label: "Titolo", name: title, widget: string }
+      - { label: "Data", name: date, widget: datetime, format: "YYYY-MM-DD", date_only: true }
+      - { label: "Estratto", name: excerpt, widget: text, required: false }
+      - label: "Giocatori presenti"
+        name: players
+        widget: list
+        required: false
+        field: { label: Giocatore, name: player, widget: string }
+      - { label: "Contenuto", name: body, widget: markdown }
+
+  - name: characters
+    label: Personaggi
+    folder: src/content/characters
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nome", name: name, widget: string }
+      - { label: "Classe", name: class, widget: string }
+      - { label: "Razza", name: race, widget: string }
+      - { label: "Giocato da", name: player, widget: string, required: false }
+      - { label: "Emoji / Icona", name: emoji, widget: string, default: "⚔", required: false }
+      - { label: "Descrizione breve", name: description, widget: text, required: false }
+      - { label: "Biografia estesa", name: body, widget: markdown, required: false }
+
+  - name: house-rules
+    label: Regole della Casa
+    folder: src/content/house-rules
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titolo regola", name: title, widget: string }
+      - { label: "Ordine", name: order, widget: number, value_type: int, default: 99 }
+      - { label: "Contenuto", name: body, widget: markdown }
+
+  - name: world
+    label: Il Mondo
+    folder: src/content/world
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titolo sezione", name: title, widget: string }
+      - { label: "Ordine", name: order, widget: number, value_type: int, default: 99 }
+      - { label: "Contenuto", name: body, widget: markdown }
+
+  - name: credits
+    label: Credits
+    folder: src/content/credits
+    create: false
+    files:
+      - label: "Pagina Credits"
+        name: credits
+        file: src/content/credits/credits.md
+        fields:
+          - { label: "Titolo", name: title, widget: string }
+          - { label: "Contenuto", name: body, widget: markdown }

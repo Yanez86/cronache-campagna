@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const worldFiles = await Astro.glob('../content/world/*.md');
+const sections = worldFiles.map(w => ({ ...w.frontmatter, content: w.compiledContent() }));
+sections.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+---
+<BaseLayout title="Il Mondo — Cronache della Campagna" activeNav="world">
+  <div class="parchment">
+    <h1 class="display-title">Il Mondo</h1>
+    <p class="subtitle">⚔ &nbsp; Terre, storie e misteri &nbsp; ⚔</p>
+    <div class="ornament-divider">— ✦ —</div>
+    {sections.length === 0 ? (
+      <p style="text-align:center; color:var(--ink-faded); font-style:italic;">Il mondo attende di essere scoperto.</p>
+    ) : sections.map(section => (
+      <>
+        <h2>{section.title}</h2>
+        <div class="session-content" set:html={section.content} />
+      </>
+    ))}
+  </div>
+</BaseLayout>
